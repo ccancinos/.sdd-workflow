@@ -1,0 +1,46 @@
+# openspec/config.yaml — per-project SDD configuration.
+#
+# This file is copied into a project's openspec/ directory by `sdd-init` (or by hand) the first
+# time you use SDD in that project. It is read by the SDD phase agents/skills — there is no binary
+# that parses it, so treat it as a convention. Edit values to fit the project.
+
+schema: spec-driven
+
+# Cached project context reused across phases. sdd-init fills this in from the detected stack.
+context: |
+  Tech stack:
+  Architecture:
+  Testing:
+  Style:
+
+# Strict TDD is OFF by default. When true (and test tooling exists), sdd-apply follows
+# RED -> GREEN -> REFACTOR and sdd-verify audits the evidence. When false, tests may be written
+# after implementation, or decided case by case.
+strict_tdd: false
+
+# Per-phase project conventions. Each phase reads its own key if present.
+rules:
+  proposal:
+    - Include a rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Document architecture decisions with rationale and rejected alternatives
+  tasks:
+    - Keep each task completable in one session
+  apply:
+    - Follow existing code patterns and conventions
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+# Cached testing capabilities so phases don't re-detect every run. sdd-init writes these.
+testing:
+  detected: ""            # ISO date when detected
+  runner:
+    command: ""           # e.g. "go test ./..." or "npm test"
+    framework: ""         # e.g. "Go standard testing", "Vitest"
