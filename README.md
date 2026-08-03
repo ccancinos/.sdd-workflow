@@ -1,6 +1,6 @@
 # Documentation
 
-**A workflow harness for AI-assisted software engineering.** It puts a real engineering process
+**A workflow harness for AI-assisted software engineering.** It puts an engineering process
 around an AI agent, so building software with AI becomes a sequence of bounded, reviewable steps —
 not a big prompt you throw at the model while hoping the fix-it loop eventually converges.
 
@@ -10,13 +10,33 @@ approval gates, and per-agent permissions.
 
 > **AI should not replace the engineering process — it should operate inside one.**
 
+## The idea, in one paragraph
+
+The bottleneck in AI-assisted development isn't the model's ability to write code — it's **entropy**:
+long conversations drift, context stays implicit, decisions scatter, and the model re-reconstructs
+intent every turn.
+
+This harness reduces entropy by **replacing conversational state with explicit,
+Git-tracked artifacts**, **treating each artifact as a contract for the next phase**, **orchestrating
+specialized agents whose boundaries are enforced by permissions**, and **keeping a human at approval
+gates that progressively narrow the solution space**.
+
+Better models reduce implementation mistakes;
+better workflows reduce engineering mistakes. This project is about the second problem — which is why
+it stays valuable no matter how good the models get.
+
 ## Quick start
 
 ```bash
-git clone <your-fork-url> .sdd-workflow      # inside your project / umbrella dir
-.sdd-workflow/bin/link.sh --opencode --claude
+# inside your project / umbrella dir
+git clone https://github.com/ccancinos/.sdd-workflow .sdd-workflow
+.sdd-workflow/bin/link.sh --opencode --claude --persona
 .sdd-workflow/bin/skill-registry.sh
 ```
+
+> **Claude Code compatibility:** Before using this workflow with Claude Code, delete the `tools` section from every agent definition.
+> Claude Code currently doesn't support those entries, so removing them is required for the agents to work correctly.
+> This is a temporary compatibility workaround that will be addressed in a future release.
 
 Then, in your agent: `/sdd-new my-feature` (OpenCode) or ask the `sdd-orchestrator` to start SDD.
 Full steps in [`docs/guides/install.md`](docs/guides/install.md).
@@ -44,16 +64,7 @@ New here? Read top to bottom.
 | Doc | Read it to… |
 | --- | --- |
 | [`commands.md`](docs/reference/commands.md) | Look up the canonical command list |
+| [`models.md`](docs/reference/models.md) | Pick a model per agent (Heavy/Balanced/Fast) to tune cost vs. capability |
 | [`permissions.md`](docs/reference/permissions.md) | Harden it with the opt-in secrets deny-list |
 | [`context7.md`](docs/reference/context7.md) | Add live library docs (Context7 MCP server) |
 
-## The idea, in one paragraph
-
-The bottleneck in AI-assisted development isn't the model's ability to write code — it's **entropy**:
-long conversations drift, context stays implicit, decisions scatter, and the model re-reconstructs
-intent every turn. This harness reduces entropy by **replacing conversational state with explicit,
-Git-tracked artifacts**, **treating each artifact as a contract for the next phase**, **orchestrating
-specialized agents whose boundaries are enforced by permissions**, and **keeping a human at approval
-gates that progressively narrow the solution space**. Better models reduce implementation mistakes;
-better workflows reduce engineering mistakes. This project is about the second problem — which is why
-it stays valuable no matter how good the models get.

@@ -5,7 +5,7 @@ process around an AI agent — so building software with AI stops being "roll th
 prompt and hope," and becomes a sequence of bounded, reviewable steps that a human stays in control
 of the whole way.
 
-Spec-Driven Development (SDD) is the **just a workflow encoded in that harness** — a concrete,
+Spec-Driven Development (SDD) is **just a workflow encoded in that harness** — a concrete,
 useful example. But the product is the harness: an orchestrator, specialized agents, file-based
 artifacts, approval gates, and per-agent permissions. That architecture could carry many
 engineering methodologies. SDD is just the one shipped here.

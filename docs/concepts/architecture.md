@@ -120,6 +120,9 @@ The payoff compounds: each agent stays focused on a small surface, so there's le
 over-loaded agent to drift or hallucinate — and the orchestrator stays a **thin coordinator**, never
 dragged into the details, keeping its own context clean.
 
+Because each agent is its own file, specialization extends to **which model it runs on** — you can
+tune cost vs. capability per phase. See [`reference/models.md`](../reference/models.md).
+
 ---
 
 ## Principle 4 — Gates reduce uncertainty
