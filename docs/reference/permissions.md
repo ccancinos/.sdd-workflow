@@ -1,11 +1,16 @@
-# Permissions (opt-in)
+# Permissions Deny-List (opt-in)
 
 A security-first deny-list that stops agents from reading or writing sensitive files (SSH keys,
-`.env`, cloud credentials, keychains, etc.). This is **optional** and **not applied by any script** —
-`link.sh` never edits your `opencode.json` or Claude `settings.json`. Add it yourself if you want
-it.
+`.env`, cloud credentials, keychains, etc.).
 
-The deny-list below is a security-first default `permissions` set.
+**This is a second layer of the same idea as [Principle 3 — agents are engineering
+boundaries](../concepts/architecture.md#principle-3--agents-are-engineering-boundaries).** Each SDD
+phase agent already restricts its own tools in frontmatter (e.g. `sdd-explore` and `sdd-verify`
+cannot edit at all). This deny-list adds a **project-wide guardrail on top of that** — a boundary
+that applies to every agent, not just the phase agents.
+
+It's **optional** and **not applied by any script** — `link.sh` never edits your `opencode.json` or
+Claude `settings.json`. Add it yourself if you want it.
 
 ## Sensitive paths to deny
 
@@ -103,9 +108,12 @@ across versions. Verify with a quick test (ask the agent to read a dummy `.env`)
 
 ---
 
-## Note on the SDD agents' own permissions
+## How this relates to the agents' own permissions
 
-Independently of this deny-list, each SDD phase agent already restricts its own tools via its
-frontmatter (`tools:` for Claude Code, `permission:` for OpenCode). For example `sdd-explore` and
-`sdd-verify` cannot edit files. This deny-list is an additional, project-wide guardrail on top of
-that.
+| Layer | Scope | Enforced by |
+| --- | --- | --- |
+| **Per-agent boundaries** | One agent's tools (e.g. `sdd-explore` can't edit) | Agent frontmatter — always on |
+| **This deny-list** | Every agent, sensitive paths | Your `opencode.json` / `settings.json` — opt-in |
+
+The two compose: even the one phase that *can* write code (`sdd-apply`) still can't touch a denied
+path if you've added this list. Defense in depth.

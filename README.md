@@ -1,12 +1,14 @@
-# .sdd-workflow
+# Documentation
 
-A portable Spec-Driven Development (SDD) toolkit for **OpenCode** and **Claude Code**. Clone it into
-a project, run one script, and your agent gains an SDD orchestrator, 10 phase agents, slash
-commands, and a curated skill library — with file-based artifacts, approval gates between phases,
-and a shared skill registry. Detach it just as easily.
+**A workflow harness for AI-assisted software engineering.** It puts a real engineering process
+around an AI agent, so building software with AI becomes a sequence of bounded, reviewable steps —
+not a big prompt you throw at the model while hoping the fix-it loop eventually converges.
 
-It's a distilled, dependency-free SDD toolkit: no Go binary, no global install. Just markdown +
-symlinks.
+Spec-Driven Development (SDD) is the **first workflow encoded in the harness**, not the product
+itself. The product is the architecture: an orchestrator, specialized agents, file-based artifacts,
+approval gates, and per-agent permissions.
+
+> **AI should not replace the engineering process — it should operate inside one.**
 
 ## Quick start
 
@@ -17,32 +19,41 @@ git clone <your-fork-url> .sdd-workflow      # inside your project / umbrella di
 ```
 
 Then, in your agent: `/sdd-new my-feature` (OpenCode) or ask the `sdd-orchestrator` to start SDD.
+Full steps in [`docs/guides/install.md`](docs/guides/install.md).
 
-Detach with `.sdd-workflow/bin/unlink.sh`.
+## What do you want to know next?
 
-## What's inside
+New here? Read top to bottom.
 
-| Path | What |
+**`concepts/` — the WHY (start here)**
+
+| Doc | Read it to… |
 | --- | --- |
-| `agents/` | SDD orchestrator + 10 phase agents (superset frontmatter: works in both agents from one file) |
-| `commands/` | `/sdd-new`, `/sdd-continue`, `/sdd-status`, `/sdd-ff` |
-| `skills/` | SDD phase skills, foundation skills, and shared conventions |
-| `persona/` | Optional persona / working-contract, referenced (not copied) into `AGENTS.md`/`CLAUDE.md` |
-| `templates/` | `openspec-config.yaml` — per-project SDD config (`strict_tdd: false` by default) |
-| `bin/` | `link.sh`, `unlink.sh`, `skill-registry.sh`, `new-artifact.sh` |
-| `docs/` | `usage.md`, `permissions.md` (opt-in), `context7.md` (opt-in) |
+| [`overview.md`](docs/concepts/overview.md) | Understand what this is, the problem it solves, and the philosophy |
+| [`architecture.md`](docs/concepts/architecture.md) | Understand how it's built — the four principles + SDD as the first workflow |
 
-## Design highlights
+**`guides/` — the HOW (task-oriented)**
 
-- **One file per agent, two symlinks.** Each agent file carries both Claude Code's `tools:` and
-  OpenCode's `permission:` blocks; each parser ignores what it doesn't recognize. No duplication, no
-  drift.
-- **Skills live once** in `.claude/skills/` (OpenCode reads it natively) — registered exactly once
-  even with both agents wired.
-- **Works from a non-git umbrella directory** grouping several service repos.
-- **Clean detach**: `unlink.sh` removes only what `link.sh` created (tracked in a manifest); your
-  files are never touched.
+| Doc | Read it to… |
+| --- | --- |
+| [`install.md`](docs/guides/install.md) | Attach/detach it to a project (single repo vs. umbrella) |
+| [`workflow.md`](docs/guides/workflow.md) | Run a change end to end — start, stop, resume, rework |
 
-See [`docs/usage.md`](docs/usage.md) for install/attach/detach, and
-[`docs/workflow.md`](docs/workflow.md) for a worked example of running a change (start, stop,
-resume, restart, rework).
+**`reference/` — lookups & opt-in config**
+
+| Doc | Read it to… |
+| --- | --- |
+| [`commands.md`](docs/reference/commands.md) | Look up the canonical command list |
+| [`permissions.md`](docs/reference/permissions.md) | Harden it with the opt-in secrets deny-list |
+| [`context7.md`](docs/reference/context7.md) | Add live library docs (Context7 MCP server) |
+
+## The idea, in one paragraph
+
+The bottleneck in AI-assisted development isn't the model's ability to write code — it's **entropy**:
+long conversations drift, context stays implicit, decisions scatter, and the model re-reconstructs
+intent every turn. This harness reduces entropy by **replacing conversational state with explicit,
+Git-tracked artifacts**, **treating each artifact as a contract for the next phase**, **orchestrating
+specialized agents whose boundaries are enforced by permissions**, and **keeping a human at approval
+gates that progressively narrow the solution space**. Better models reduce implementation mistakes;
+better workflows reduce engineering mistakes. This project is about the second problem — which is why
+it stays valuable no matter how good the models get.

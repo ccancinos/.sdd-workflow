@@ -1,14 +1,26 @@
-# The SDD Workflow — Example Usage
+# Running a Change (Worked Example)
 
-A worked example of running a change end to end, plus how to start, stop, resume, restart, and
-rework any phase. This describes the current implementation exactly: **the files under
-`openspec/changes/<change-name>/` are the entire state — there is no hidden database.**
+Run the SDD workflow end to end, and stop, resume, restart, or rework any phase. This describes the
+current implementation exactly: **the files under `openspec/changes/<change-name>/` are the entire
+state — there is no hidden database.**
 
-For install/attach/detach, see [`usage.md`](usage.md).
+New here? Read [`concepts/overview.md`](../concepts/overview.md) for *why* first. To install, see
+[`guides/install.md`](install.md).
+
+## Quick path
+
+```
+/sdd-new add-rate-limiting        # start: explore, then propose (with gates)
+/sdd-continue add-rate-limiting   # resume: run the next phase in the chain
+/sdd-status add-rate-limiting     # read-only: which artifacts exist, what's next
+```
+
+At each gate: **approve** to advance, give **feedback** to re-run the same phase, or ask a
+**question** to get an answer without advancing. Stop anytime — the `.md` files persist.
 
 ---
 
-## Starting a change & naming the output directory
+## Start a change
 
 You start with a slash command and a **kebab-case change name**. That name becomes the openspec
 subdirectory holding every output file.
@@ -40,8 +52,8 @@ openspec/changes/add-rate-limiting/
 Name rules: short, kebab-case (`^[a-z0-9]+(-[a-z0-9]+)*$`), describes the change. You pick it; the
 orchestrator uses it verbatim as `{change-name}`.
 
-Before phase 1, the orchestrator runs a one-time **Session Preflight**: resolves the workspace
-root, confirms the change name, delegates `sdd-init` if `openspec/config.yaml` is missing, and reads
+Before phase 1, the orchestrator runs a one-time **Session Preflight**: resolves the workspace root,
+confirms the change name, delegates `sdd-init` if `openspec/config.yaml` is missing, and reads
 `.sdd-workflow/.skill-registry.md` so it can pass exact skill paths to sub-agents.
 
 ---
@@ -60,11 +72,11 @@ flowchart LR
     V --> AR[archive]
 ```
 
-`spec` and `design` both depend only on `propose`, so they may run in either order (or in
-parallel). Everything else is strictly sequential.
+`spec` and `design` both depend only on `propose`, so they may run in either order (or in parallel).
+Everything else is strictly sequential.
 
 Every phase follows the same loop: the orchestrator delegates to a focused sub-agent, the sub-agent
-writes its file, the orchestrator shows you the summary, then **STOPS and waits for you**.
+writes its file, the orchestrator shows you the summary, then **STOPS and waits for you.**
 
 ```mermaid
 sequenceDiagram
@@ -84,6 +96,9 @@ sequenceDiagram
         O-->>You: answer, do not advance
     end
 ```
+
+> The *why* behind this loop — why each phase is a specialized agent, why the gate reduces
+> uncertainty, why the files are the state — is in [`concepts/architecture.md`](../concepts/architecture.md).
 
 ---
 
@@ -105,37 +120,23 @@ you explicitly want the structured process.
 
 ---
 
-## Approval vs. feedback at each gate
+## Approve, give feedback, or ask — at each gate
 
 The gate is **prompt-driven**, not a hardcoded state machine, so what you say determines what
 happens:
 
 | You respond with… | What happens |
 | --- | --- |
-| **Approval** — "looks good", "continue", "next", "approved", "sí, seguí" | Orchestrator launches the **next** phase. |
+| **Approval** — "looks good", "continue", "next", "approved" | Orchestrator launches the **next** phase. |
 | **Feedback** — "scope is too broad, drop X", "add an edge case for empty input" | Orchestrator **re-runs the same phase** with your feedback, **overwriting the same file** in place. Iterates until you approve. Does NOT advance. |
 | **A question** — "why approach B?" | Answers without advancing or rewriting. You then approve or give feedback. |
 
 **To agree and continue:** say so in plain language — "continue" / "approve" / "next". No special
-token is required.
+token required.
 
 > Caveat: because gates are instruction-driven, a mixed phrase like *"ok but also consider X"* is
 > ambiguous — it may be read as feedback OR approval. For zero ambiguity, give feedback on one turn
 > and approve on the next.
-
----
-
-## Commands reference
-
-| Command | What it does |
-| --- | --- |
-| `/sdd-new <name>` | Start a change: explore, then propose (with approval gates). |
-| `/sdd-continue [name]` | Run the next phase in the dependency chain. |
-| `/sdd-status [name]` | Read-only: show which artifacts exist and the next recommended phase. |
-| `/sdd-ff <name>` | Fast-forward the planning phases (propose → tasks). Stops before apply. |
-
-In Claude Code, phrase these as requests to the `sdd-orchestrator` (e.g. "continue the SDD change
-add-rate-limiting").
 
 ---
 
@@ -173,9 +174,9 @@ Check state anytime (no changes made):
 
 ### Stop mid-phase
 
-Just end the session. Planning phases either finished their file or didn't (so `sdd-continue` re-runs
-that phase). `apply` is special: it marks each finished task `- [x]` and leaves the rest `- [ ]`,
-so resuming skips completed tasks and continues the remaining ones.
+Just end the session. Planning phases either finished their file or didn't (so `sdd-continue`
+re-runs that phase). `apply` is special: it marks each finished task `- [x]` and leaves the rest
+`- [ ]`, so resuming skips completed tasks and continues the remaining ones.
 
 ### Restart / redo an earlier phase (rework)
 
@@ -224,8 +225,8 @@ often as you like.
 
 ### "Multiple changes in flight at once"
 
-Each change is its own folder under `openspec/changes/`. Pass the name explicitly so the orchestrator
-never guesses:
+Each change is its own folder under `openspec/changes/`. Pass the name explicitly so the
+orchestrator never guesses:
 
 ```
 /sdd-status                     # lists active changes if ambiguous
@@ -244,3 +245,5 @@ Start with `/sdd-new`, approve or give feedback at each gate, resume with `/sdd-
 with `/sdd-status`, and rework by re-running a phase (remembering to cascade downstream). The files
 in `openspec/changes/<name>/` are the single source of truth — copy them, commit them, diff them,
 hand them off.
+
+For the full command list, see [`reference/commands.md`](../reference/commands.md).

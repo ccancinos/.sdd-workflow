@@ -1,11 +1,12 @@
-# Context7 (opt-in)
+# Context7 Live Docs (opt-in)
 
 [Context7](https://github.com/upstash/context7) is an MCP server that gives your agent live,
-version-accurate documentation for frameworks and libraries. It's **optional** and **not wired by
-any script** — add the MCP entry yourself if you want it.
+version-accurate documentation for frameworks and libraries. It's a way to feed phases like
+`explore` and `design` **grounded facts instead of recalled ones** — reducing the "missing
+structure" class of hallucination described in [the overview](../concepts/overview.md#the-problem-it-solves).
 
-A free API key from [context7.com](https://context7.com) raises your rate limits; it's not
-required.
+It's **optional** and **not wired by any script** — add the MCP entry yourself if you want it. A
+free API key from [context7.com](https://context7.com) raises your rate limits; it's not required.
 
 ---
 
@@ -88,8 +89,8 @@ it varies by version):
 
 ---
 
-## Note
+## Note on context cost
 
 MCP servers add tokens to every request's context. Context7 is lightweight, but if you wire several
 MCP servers, enable them per-agent (see the OpenCode MCP docs) rather than globally to keep context
-lean.
+lean — the same "keep each step's context clean" discipline the harness applies to phase agents.
