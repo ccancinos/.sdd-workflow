@@ -9,14 +9,19 @@
 # Usage:
 #   .sdd-workflow/bin/link.sh [--opencode] [--claude] [--persona]
 #
-#   --opencode   Wire OpenCode   (.opencode/agents, .opencode/commands)
+#   --opencode   Wire OpenCode   (.opencode/agents, .opencode/commands, .opencode/skills)
 #   --claude     Wire Claude Code (.claude/agents, .claude/commands, .claude/skills)
-#   --persona    Also reference .sdd-workflow/persona/persona.md from AGENTS.md / CLAUDE.md
+#   --persona    Also reference .sdd-workflow/common/persona/persona.md from AGENTS.md / CLAUDE.md
 #
 # If neither --opencode nor --claude is given, both are wired.
 #
-# Skills are ALWAYS placed in .claude/skills/ only. OpenCode reads .claude/skills/ natively, so a
-# single physical location serves both agents and skills are never registered twice.
+# Source layout inside .sdd-workflow/:
+#   claude/agents/                  — Claude-specific agent files
+#   opencode/agents/                — OpenCode-specific agent files
+#   common/commands/                — slash commands (identical for both tools)
+#   common/skills/extensions/       — standalone skills symlinked into tool skill dirs
+#   common/skills/phases/           — SDD phase skills (internal; never symlinked to tools)
+#   common/persona/                 — persona files (referenced via AGENTS.md / CLAUDE.md)
 
 set -euo pipefail
 
@@ -81,7 +86,7 @@ link_dir_entries() {
 }
 
 # --- persona reference (opt-in) ---------------------------------------------
-PERSONA_REF="@.sdd-workflow/persona/persona.md"
+PERSONA_REF="@.sdd-workflow/common/persona/persona.md"
 PERSONA_BEGIN="<!-- sdd-workflow:persona -->"
 PERSONA_END="<!-- /sdd-workflow:persona -->"
 
@@ -108,22 +113,18 @@ add_persona_ref() {
 # --- do the work -------------------------------------------------------------
 echo "Attaching .sdd-workflow at root: $ROOT"
 
-# Skills: single physical location in .claude/skills/ (read by BOTH agents).
-if [[ $WANT_OPENCODE -eq 1 || $WANT_CLAUDE -eq 1 ]]; then
-  echo "Skills -> $ROOT/.claude/skills/ (shared by OpenCode + Claude Code)"
-  link_dir_entries "$SDD_DIR/skills" "$ROOT/.claude/skills"
-fi
-
 if [[ $WANT_OPENCODE -eq 1 ]]; then
-  echo "OpenCode agents/commands ->"
-  link_dir_entries "$SDD_DIR/agents"   "$ROOT/.opencode/agents"
-  link_dir_entries "$SDD_DIR/commands" "$ROOT/.opencode/commands"
+  echo "OpenCode agents/commands/skills ->"
+  link_dir_entries "$SDD_DIR/opencode/agents"          "$ROOT/.opencode/agents"
+  link_dir_entries "$SDD_DIR/common/commands"          "$ROOT/.opencode/commands"
+  link_dir_entries "$SDD_DIR/common/skills/extensions" "$ROOT/.opencode/skills"
 fi
 
 if [[ $WANT_CLAUDE -eq 1 ]]; then
-  echo "Claude Code agents/commands ->"
-  link_dir_entries "$SDD_DIR/agents"   "$ROOT/.claude/agents"
-  link_dir_entries "$SDD_DIR/commands" "$ROOT/.claude/commands"
+  echo "Claude Code agents/commands/skills ->"
+  link_dir_entries "$SDD_DIR/claude/agents"            "$ROOT/.claude/agents"
+  link_dir_entries "$SDD_DIR/common/commands"          "$ROOT/.claude/commands"
+  link_dir_entries "$SDD_DIR/common/skills/extensions" "$ROOT/.claude/skills"
 fi
 
 if [[ $WANT_PERSONA -eq 1 ]]; then

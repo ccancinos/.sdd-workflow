@@ -25,7 +25,7 @@ To detach: `.sdd-workflow/bin/unlink.sh`.
 
 | Flag | Wires |
 | --- | --- |
-| `--opencode` | OpenCode: `.opencode/agents`, `.opencode/commands` |
+| `--opencode` | OpenCode: `.opencode/agents`, `.opencode/commands`, `.opencode/skills` |
 | `--claude` | Claude Code: `.claude/agents`, `.claude/commands`, `.claude/skills` |
 | *(omit both)* | Wires **both** |
 | `--persona` | Also references the persona file from `AGENTS.md` / `CLAUDE.md` (opt-in) |
@@ -97,7 +97,7 @@ an agent/command/skill, just re-run:
 
 It scaffolds a spec-correct file with frontmatter that works in both agents, then reminds you to
 re-link and re-index. You can also add your own curated skills by copying a skill directory into
-`.sdd-workflow/skills/` and re-running `link.sh` + `skill-registry.sh`.
+`.sdd-workflow/common/skills/extensions/` and re-running `link.sh` + `skill-registry.sh`.
 
 ---
 
@@ -124,15 +124,17 @@ pre-existing `AGENTS.md` — are never touched.
 
 ---
 
-## Why symlinks, one file per agent
+## Why symlinks, separate files per tool
 
-Each agent file uses a **superset frontmatter**: it carries both Claude Code's `tools:` block and
-OpenCode's `permission:` block. Both parsers ignore keys they don't recognize, so a single physical
-file, symlinked into both `.opencode/agents/` and `.claude/agents/`, drives both agents with no
-duplication and no risk of the two drifting out of sync.
+Agent files are kept in `.sdd-workflow/claude/agents/` and `.sdd-workflow/opencode/agents/` with
+native frontmatter for each tool (Claude Code uses `tools:`, OpenCode uses `permission:`). Symlinks
+in `.claude/agents/` and `.opencode/agents/` point into these source directories. The agent bodies
+are identical between the two versions — only the frontmatter differs.
 
-Skills go into a **single** location, `.claude/skills/`, which OpenCode reads natively — so a skill
-is registered exactly once even when both agents are wired.
+Extension skills go into `.sdd-workflow/common/skills/extensions/` and are symlinked into both
+`.claude/skills/` and `.opencode/skills/` by `link.sh`. Phase skills live only in
+`.sdd-workflow/common/skills/phases/` and are never symlinked to tool directories — agents load
+them directly via hardcoded `.sdd-workflow/` paths, keeping them internal to the SDD pipeline.
 
 ---
 

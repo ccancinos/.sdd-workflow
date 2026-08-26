@@ -9,8 +9,8 @@
 
 ## Skill Registry Scan Rules
 
-- Scan project skills: `{project-root}/.claude/skills/` and `{project-root}/.sdd-workflow/skills/`.
-- Skip `sdd-*` and `_shared`; deduplicate by skill name.
+- Scan project skills in order: `{project-root}/.claude/skills/`, `{project-root}/.opencode/skills/`, then `{project-root}/.sdd-workflow/common/skills/extensions/` (first match by name wins).
+- Phase skills (`common/skills/phases/`) are excluded — the orchestrator loads them via hardcoded paths, not the registry. Deduplicate by skill name.
 - Read each selected `SKILL.md` frontmatter as needed.
 - Extract `name`, trigger text from `description`, full `SKILL.md` path, and scope.
 - Treat the registry as an index, not a generated summary; subagents receive exact paths and read the full skill source of truth.

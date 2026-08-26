@@ -3,7 +3,7 @@
 # unlink.sh — detach the .sdd-workflow toolkit from this workspace.
 #
 # Removes exactly what link.sh created, as recorded in .sdd-workflow/.link-manifest:
-#   - every symlink it made under .opencode/ and .claude/
+#   - every symlink it made under .opencode/ and .claude/ (agents, commands, skills)
 #   - the managed persona block in AGENTS.md / CLAUDE.md (if --persona was used)
 # Then prunes now-empty directories.
 #

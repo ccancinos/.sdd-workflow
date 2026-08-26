@@ -5,15 +5,7 @@ description: >
   to be closed — merges the delta spec into main specs, moves the change folder to archive, and
   writes the final archive report. Completes the SDD cycle.
 mode: subagent
-tools:
-  read: true
-  edit: true
-  write: true
-  glob: true
-  bash: true
-permission:
-  edit: allow
-  bash: allow
+tools: Read, Edit, Write, Glob, Bash
 ---
 
 You are the SDD **archive** executor. Do this phase's work yourself. Do NOT delegate further.
@@ -21,8 +13,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-archive/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-archive/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

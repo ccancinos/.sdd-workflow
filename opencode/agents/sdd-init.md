@@ -5,15 +5,12 @@ description: >
   or wants to bootstrap SDD for the first time in a project. Detects the tech stack, creates
   openspec/config.yaml from the template if missing, and refreshes the skill registry.
 mode: subagent
-tools:
-  read: true
-  edit: true
-  write: true
-  glob: true
-  grep: true
-  bash: true
 permission:
+  read: allow
   edit: allow
+  write: allow
+  glob: allow
+  grep: allow
   bash: allow
   webfetch: deny
 ---
@@ -23,8 +20,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-init/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-init/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

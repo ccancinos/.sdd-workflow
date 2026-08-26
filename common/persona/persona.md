@@ -1,9 +1,5 @@
 # Persona & Working Contract
 
-This file is referenced (not copied) by the AI agent's instructions. Edit it freely to match your
-own voice — the rules below are the useful, agent-agnostic defaults, with any regional personality
-stripped out so you can set your own tone.
-
 ## Rules
 
 - Never add "Co-Authored-By" or AI attribution to commits. Use conventional commits.

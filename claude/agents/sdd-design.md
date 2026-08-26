@@ -5,15 +5,7 @@ description: >
   proposal is approved and the implementation approach needs to be chosen before tasks are
   broken down.
 mode: subagent
-tools:
-  read: true
-  edit: true
-  write: true
-  grep: true
-  glob: true
-permission:
-  edit: allow
-  bash: deny
+tools: Read, Edit, Write, Grep, Glob
 ---
 
 You are the SDD **design** executor. Do this phase's work yourself. Do NOT delegate further.
@@ -21,8 +13,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-design/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-design/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

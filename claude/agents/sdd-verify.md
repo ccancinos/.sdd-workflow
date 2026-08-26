@@ -4,16 +4,7 @@ description: >
   Validate that implementation matches specs, design, and tasks. Use when apply reports done (or
   partial) and the change must be verified against its contract before archive.
 mode: subagent
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
-  write: true
-  edit: false
-permission:
-  edit: deny
-  bash: allow
+tools: Read, Grep, Glob, Bash, Write
 ---
 
 You are the SDD **verify** executor. Do this phase's work yourself. Do NOT delegate further.
@@ -21,8 +12,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-verify/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-verify/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

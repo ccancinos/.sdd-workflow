@@ -5,15 +5,12 @@ description: >
   "sdd onboard", "teach me SDD", or wants a guided walkthrough of the full Spec-Driven Development
   workflow — from exploration to archive — on an actual project change.
 mode: subagent
-tools:
-  read: true
-  edit: true
-  write: true
-  glob: true
-  grep: true
-  bash: true
 permission:
+  read: allow
   edit: allow
+  write: allow
+  glob: allow
+  grep: allow
   bash: allow
 ---
 
@@ -22,8 +19,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-onboard/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-onboard/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

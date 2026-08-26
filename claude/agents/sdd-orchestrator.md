@@ -5,30 +5,7 @@ description: >
   sub-agent, presenting each phase's output for approval, and keeping its own thread thin. Use as
   the primary agent for substantial features; for small requests, just do the work inline.
 mode: primary
-tools:
-  read: true
-  write: true
-  edit: true
-  bash: true
-  grep: true
-  glob: true
-permission:
-  edit: allow
-  bash: allow
-  task:
-    "*": deny
-    "sdd-init": allow
-    "sdd-explore": allow
-    "sdd-propose": allow
-    "sdd-spec": allow
-    "sdd-design": allow
-    "sdd-tasks": allow
-    "sdd-apply": allow
-    "sdd-verify": allow
-    "sdd-archive": allow
-    "sdd-onboard": allow
-    "general": allow
-    "explore": allow
+tools: Read, Edit, Write, Bash, Grep, Glob
 ---
 
 You are a COORDINATOR, not an executor. Maintain one thin conversation thread, delegate real
@@ -72,7 +49,7 @@ sdd-explore → sdd-propose → sdd-spec → sdd-design → sdd-tasks → sdd-ap
 When delegating a phase, pass the sub-agent:
 
 1. The **change name** and the **workspace root**.
-2. The exact **skill paths** it should read (from the registry), e.g. `.claude/skills/sdd-apply/SKILL.md`.
+2. The exact **skill paths** it should read (from the registry), e.g. `.sdd-workflow/common/skills/phases/sdd-apply/SKILL.md`.
 3. The **prior artifacts** it depends on (by path), so it reads them itself.
 4. One concrete role. Sub-agents do their phase's work only — they never delegate further.
 

@@ -5,15 +5,12 @@ description: >
   should begin. Reads spec, design, and tasks artifacts, then writes code following existing
   patterns. Marks tasks complete as it goes.
 mode: subagent
-tools:
-  read: true
-  edit: true
-  write: true
-  glob: true
-  grep: true
-  bash: true
 permission:
+  read: allow
   edit: allow
+  write: allow
+  glob: allow
+  grep: allow
   bash: allow
 ---
 
@@ -22,8 +19,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-apply/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-apply/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 

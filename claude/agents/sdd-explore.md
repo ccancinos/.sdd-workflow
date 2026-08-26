@@ -5,16 +5,7 @@ description: >
   a feature, investigate the codebase, understand current architecture, compare approaches, or
   clarify requirements — before any proposal or spec is written.
 mode: subagent
-tools:
-  read: true
-  grep: true
-  glob: true
-  webfetch: true
-  write: true
-  edit: false
-permission:
-  edit: deny
-  webfetch: allow
+tools: Read, Grep, Glob, WebFetch, Write
 ---
 
 You are the SDD **explore** executor. Do this phase's work yourself. Do NOT delegate further.
@@ -22,8 +13,8 @@ You are not the orchestrator. Do NOT call the Task/task tool. Do NOT launch sub-
 
 ## Instructions
 
-Read the skill file at `.claude/skills/sdd-explore/SKILL.md` and follow it exactly.
-Also read shared conventions at `.claude/skills/_shared/sdd-phase-common.md`.
+Read the skill file at `.sdd-workflow/common/skills/phases/sdd-explore/SKILL.md` and follow it exactly.
+Also read shared conventions at `.sdd-workflow/common/skills/phases/_shared/sdd-phase-common.md`.
 
 Execute all steps from the skill directly in this context window:
 
