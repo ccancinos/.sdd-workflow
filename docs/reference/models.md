@@ -77,42 +77,59 @@ a specific model for a specific phase.
 
 ## How to set it
 
-Add a `model:` line to the agent's frontmatter in `.sdd-workflow/agents/<agent>.md`.
+Each tool has its own agent file with its own frontmatter format. Edit the file for the tool you
+are targeting and add or update the `model:` line. The value format is not interchangeable between
+tools — OpenCode requires a provider prefix, Claude Code must not have one.
 
-**OpenCode** — value is a full `provider/model-id`:
+### OpenCode
+
+File: `.sdd-workflow/opencode/agents/<agent>.md`
+
+Value format: full `provider/model-id`.
 
 ```yaml
 ---
 name: sdd-tasks
 mode: subagent
 model: openai/gpt-5.6-luna
-# ... existing tools / permission blocks ...
+permission:
+  # ... existing permission: block ...
 ---
 ```
 
-**Claude Code** — value is an alias (`opus` / `sonnet` / `haiku`), a full model ID, or `inherit`:
+If omitted, a subagent inherits the invoking agent's model.
+
+### Claude Code
+
+File: `.sdd-workflow/claude/agents/<agent>.md`
+
+Value format: bare model ID (no provider prefix), or a short alias (`opus` / `sonnet` / `haiku`),
+or `inherit`.
 
 ```yaml
 ---
 name: sdd-tasks
 mode: subagent
-model: haiku
-# ... existing tools / permission blocks ...
+model: claude-haiku-4-5
+tools: Read, Edit, Write, Grep, Glob
 ---
 ```
 
-### Setting `model:` across both harnesses
+If omitted, defaults to `inherit`. Also honors the `CLAUDE_CODE_SUBAGENT_MODEL` environment
+variable as a session-wide override.
 
-This is a preference, not a requirement — leave it unset and each agent uses its default model. If
-you do set it, note that the two harnesses read `model:` with **different value formats**:
+### Setting the same model in both tools
 
-- **OpenCode:** `model: provider/model-id` — e.g. `openai/gpt-5.6-terra` or
-  `anthropic/claude-sonnet-4-...`. If omitted, a subagent inherits the invoking agent's model.
-- **Claude Code:** `model:` takes an alias (`opus` / `sonnet` / `haiku`), a full model ID, or
-  `inherit`. If omitted, it defaults to `inherit`.
+Because each tool has its own file, you set the correct format in each independently — no manual
+switching needed. Example: pinning `sdd-tasks` to Haiku in both:
 
-A single shared `model:` value won't be valid in both at once, so set it in the format of the
-harness you're running and adjust if you switch. Claude Code also honors the
-`CLAUDE_CODE_SUBAGENT_MODEL` environment variable as a session-wide override. Confirm current model
-IDs against the OpenCode and Anthropic/OpenAI docs before setting them, since model names change
-often.
+```yaml
+# .sdd-workflow/opencode/agents/sdd-tasks.md
+model: anthropic/claude-haiku-4-5
+
+# .sdd-workflow/claude/agents/sdd-tasks.md
+model: claude-haiku-4-5
+```
+
+Confirm current model IDs against the OpenCode and Anthropic/OpenAI docs before setting them —
+model names change often.

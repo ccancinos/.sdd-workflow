@@ -34,10 +34,6 @@ git clone https://github.com/ccancinos/.sdd-workflow .sdd-workflow
 .sdd-workflow/bin/skill-registry.sh
 ```
 
-> **Claude Code compatibility:** Before using this workflow with Claude Code, delete the `tools` section from every agent definition.
-> Claude Code currently doesn't support those entries, so removing them is required for the agents to work correctly.
-> This is a temporary compatibility workaround that will be addressed in a future release.
-
 Then, in your agent: `/sdd-new my-feature` (OpenCode) or ask the `sdd-orchestrator` to start SDD.
 Full steps in [`docs/guides/install.md`](docs/guides/install.md).
 

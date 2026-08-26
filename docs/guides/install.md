@@ -95,9 +95,14 @@ an agent/command/skill, just re-run:
 .sdd-workflow/bin/new-artifact.sh command my-command  "What this command does."
 ```
 
-It scaffolds a spec-correct file with frontmatter that works in both agents, then reminds you to
-re-link and re-index. You can also add your own curated skills by copying a skill directory into
-`.sdd-workflow/common/skills/extensions/` and re-running `link.sh` + `skill-registry.sh`.
+It scaffolds the right files for the artifact type:
+- **skill** — one `SKILL.md` in `common/skills/extensions/` (shared by both tools)
+- **agent** — two files: `claude/agents/<name>.md` (Claude-native frontmatter) and
+  `opencode/agents/<name>.md` (OpenCode-native frontmatter), with identical bodies
+- **command** — one file in `common/commands/` (shared by both tools)
+
+Then re-link and re-index as prompted. You can also add curated skills manually by copying a skill
+directory into `.sdd-workflow/common/skills/extensions/` and re-running `link.sh` + `skill-registry.sh`.
 
 ---
 
