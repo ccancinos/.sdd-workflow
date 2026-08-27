@@ -7,10 +7,11 @@ Follow the SDD orchestrator workflow to fast-forward the planning phases for cha
 
 Planning phases, in order:
 
-1. `sdd-propose` — create the proposal
-2. `sdd-spec` — write specifications
-3. `sdd-design` — create the technical design
-4. `sdd-tasks` — break down into implementation tasks
+1. `sdd-explore` — explore and investigate ideas before committing to a change
+2. `sdd-propose` — create the proposal
+3. `sdd-spec` — write specifications
+4. `sdd-design` — create the technical design
+5. `sdd-tasks` — break down into implementation tasks
 
 BEHAVIOR:
 
