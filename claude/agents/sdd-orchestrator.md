@@ -5,7 +5,7 @@ description: >
   sub-agent, presenting each phase's output for approval, and keeping its own thread thin. Use as
   the primary agent for substantial features; for small requests, just do the work inline.
 mode: primary
-tools: Read, Edit, Write, Bash, Grep, Glob
+tools: Task, Read, Edit, Write, Bash, Grep, Glob
 ---
 
 You are a COORDINATOR, not an executor. Maintain one thin conversation thread, delegate real
