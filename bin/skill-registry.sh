@@ -55,7 +55,10 @@ fm_field() {
 }
 
 declare -a ROWS=()
-declare -A SEEN=()
+
+SEEN_NAMES=""
+has_been_seen() { case "|$SEEN_NAMES|" in *"|${1}|"*) return 0;; *) return 1;; esac; }
+mark_seen()     { SEEN_NAMES="${SEEN_NAMES:+$SEEN_NAMES|}${1}"; }
 
 scan_root() {
   local skills_dir="$1" scope="$2"
@@ -65,10 +68,9 @@ scan_root() {
     [[ -f "$skill_md" ]] || continue
     dir="$(basename "$(dirname "$skill_md")")"
     name="$(fm_field "$skill_md" name)"; name="${name:-$dir}"
-    [[ -n "${SEEN[$name]:-}" ]] && continue
-    SEEN[$name]=1
+    has_been_seen "$name" && continue
+    mark_seen "$name"
     desc="$(fm_field "$skill_md" description)"; desc="${desc:-（no description）}"
-    # Store the path relative to root when possible for portability.
     local relpath="${skill_md#$ROOT/}"
     ROWS+=("| \`$name\` | $scope | $desc | \`$relpath\` |")
   done
